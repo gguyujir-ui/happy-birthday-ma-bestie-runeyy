@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Untukmu 🤍 — Kado Virtual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+
+<div class="backdrop"></div>
+<div class="floaters" id="floaters"></div>
+
+<main class="stage">
+
+  <!-- ============ PAGE 0 — COVER / ENVELOPE ============ -->
+  <section class="page" id="page-cover" data-page="cover">
+    <p class="eyebrow">untuk kamu,</p>
+    <h1 class="script-xl">Freya Anindya</h1>
+    <p class="hint">tekan amplopnya</p>
+
+    <button class="envelope" id="envelopeBtn" aria-label="Buka amplop">
+      <span class="envelope__back"></span>
+      <span class="envelope__flap"></span>
+      <span class="envelope__seal">❤</span>
+      <span class="envelope__letter-peek"></span>
+    </button>
+
+    <p class="tap-note">ketuk untuk lanjut</p>
+  </section>
+
+  <!-- ============ PAGE 1 — LETTER ============ -->
+  <section class="page" id="page-letter" data-page="letter" hidden>
+    <div class="letter-scene">
+      <div class="photo-heart">
+        <img src="assets/photo-main.jpg" alt="Foto kamu" onerror="this.style.display='none'; this.parentElement.classList.add('ph-empty')">
+      </div>
+
+      <div class="paper-card">
+        <h2 class="script-lg">Happy Birthday</h2>
+        <p class="paper-text">
+          Selamat ulang tahun, sayang 🤍 Semoga hari ini secerah senyummu,
+          dan tahun ini membawa lebih banyak alasan untuk bahagia.
+        </p>
+      </div>
+
+      <div class="polaroid-strip">
+        <div class="mini-polaroid"><img src="assets/photo-1.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></div>
+        <div class="mini-polaroid"><img src="assets/photo-2.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></div>
+        <div class="mini-polaroid"><img src="assets/photo-3.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></div>
+      </div>
+    </div>
+
+    <button class="btn-gold" id="openMenuBtn" data-goto="menu">Buka Kejutannya</button>
+  </section>
+
+  <!-- ============ PAGE 2 — MENU ============ -->
+  <section class="page" id="page-menu" data-page="menu" hidden>
+    <h2 class="script-lg center">Pilih Kejutannya</h2>
+
+    <div class="menu-grid">
+      <button class="menu-item" data-goto="journey">
+        <span class="menu-icon">📷</span>
+        <span class="script-sm">Journey</span>
+      </button>
+      <button class="menu-item" data-goto="moment">
+        <span class="menu-icon">🕰️</span>
+        <span class="script-sm">Moment</span>
+      </button>
+      <button class="menu-item" data-goto="playlist">
+        <span class="menu-icon">💿</span>
+        <span class="script-sm">Playlist</span>
+      </button>
+      <button class="menu-item" data-goto="wish">
+        <span class="menu-icon">🕯️</span>
+        <span class="script-sm">Wish</span>
+      </button>
+      <button class="menu-item menu-item--wide" data-goto="game">
+        <span class="menu-icon">🔮</span>
+        <span class="script-sm">Ramalan</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 3 — JOURNEY (photo gallery) ============ -->
+  <section class="page has-back" id="page-journey" data-page="journey" hidden>
+    <button class="btn-back" data-goto="menu">‹ Back</button>
+    <h2 class="script-lg center">Journey Kita</h2>
+
+    <div class="gallery">
+      <figure class="pola pola--1"><img src="assets/gallery-1.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></figure>
+      <figure class="pola pola--2"><img src="assets/gallery-2.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></figure>
+      <figure class="pola pola--3"><img src="assets/gallery-3.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></figure>
+      <figure class="pola pola--4"><img src="assets/gallery-4.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></figure>
+      <figure class="pola pola--5"><img src="assets/gallery-5.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></figure>
+      <figure class="pola pola--6"><img src="assets/gallery-6.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></figure>
+    </div>
+
+    <span class="deco deco--whale">🐳</span>
+    <span class="deco deco--saturn1">🪐</span>
+    <span class="deco deco--saturn2">🪐</span>
+    <span class="deco deco--heart1">💗</span>
+    <span class="deco deco--heart2">💕</span>
+  </section>
+
+  <!-- ============ PAGE 4 — MOMENT (personal message) ============ -->
+  <section class="page has-back" id="page-moment" data-page="moment" hidden>
+    <button class="btn-back" data-goto="menu">‹ Back</button>
+
+    <h2 class="script-xl name-heading">Freya Anindya</h2>
+
+    <div class="moment-layout">
+      <div class="note-card">
+        <p class="paper-text">
+          "Selamat ulang tahun, Sayang. Di hari spesialmu ini, aku cuma mau bilang
+          terima kasih karena sudah lahir ke dunia dan membawa begitu banyak
+          kebahagiaan ke hidupku. Kamu adalah hal terindah yang pernah hadir
+          dalam hidupku, dan aku berharap bisa terus merayakan hari-hari
+          bahagiamu di tahun-tahun berikutnya. I love you so much, kini dan nanti."
+        </p>
+      </div>
+
+      <div class="framed-photo">
+        <img src="assets/photo-moment.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')">
+      </div>
+    </div>
+
+    <div class="roses roses--left">🌹🌹🌹</div>
+
+    <div class="music-player">
+      <div class="vinyl" id="vinyl"></div>
+      <div class="music-info">
+        <button class="play-btn" id="playBtn" aria-label="Putar musik">▶</button>
+        <span>Play Musik</span>
+      </div>
+    </div>
+    <audio id="bgAudio" loop preload="none">
+      <!-- Ganti dengan file musikmu sendiri, contoh: <source src="assets/song.mp3" type="audio/mpeg"> -->
+    </audio>
+  </section>
+
+  <!-- ============ PAGE 5 — PLAYLIST ============ -->
+  <section class="page has-back" id="page-playlist" data-page="playlist" hidden>
+    <button class="btn-back" data-goto="menu">‹ Back</button>
+    <h2 class="script-lg center">Playlist Kita</h2>
+
+    <div class="playlist-layout">
+      <div class="yt-embed">
+        <!-- Ganti VIDEO_ID dengan id video YouTube pilihanmu -->
+        <iframe
+          src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+          title="Playlist video"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+
+      <div class="playlist-photos">
+        <div class="framed-photo framed-photo--sm"><img src="assets/photo-p1.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></div>
+        <div class="framed-photo framed-photo--sm"><img src="assets/photo-p2.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></div>
+        <div class="framed-photo framed-photo--sm"><img src="assets/photo-p3.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></div>
+      </div>
+    </div>
+
+    <div class="retro-row">
+      <span class="retro-icon">📻</span>
+      <span class="retro-icon">📺</span>
+      <svg class="notes-staff" viewBox="0 0 300 60" width="150">
+        <line x1="0" y1="10" x2="300" y2="10" stroke="#7fdcff" stroke-width="1.5"/>
+        <line x1="0" y1="22" x2="300" y2="22" stroke="#7fdcff" stroke-width="1.5"/>
+        <line x1="0" y1="34" x2="300" y2="34" stroke="#7fdcff" stroke-width="1.5"/>
+        <line x1="0" y1="46" x2="300" y2="46" stroke="#7fdcff" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <span class="floating-note note--1">♪</span>
+    <span class="floating-note note--2">♫</span>
+    <span class="floating-note note--3">♪</span>
+  </section>
+
+  <!-- ============ PAGE 6 — WISH (blow the candles) ============ -->
+  <section class="page has-back" id="page-wish" data-page="wish" hidden>
+    <button class="btn-back" data-goto="menu">‹ Back</button>
+    <h2 class="script-lg center">Tutup Mata, Buat Permintaan</h2>
+
+    <div class="cake" id="cake">
+      <span class="cake__candle cake__candle--1"><span class="cake__flame">🔥</span></span>
+      <span class="cake__candle cake__candle--2"><span class="cake__flame">🔥</span></span>
+      <span class="cake__candle cake__candle--3"><span class="cake__flame">🔥</span></span>
+      <span class="cake__top"></span>
+      <span class="cake__drip"></span>
+      <span class="cake__middle"></span>
+      <span class="cake__plate"></span>
+    </div>
+
+    <textarea class="wish-input" id="wishInput" maxlength="300"
+      placeholder="Tulis permintaanmu di sini (nanti dikirim diam-diam ke aku 🤫)"></textarea>
+
+    <button class="btn-gold" id="blowBtn">Tiup Lilin &amp; Kirim Permintaan</button>
+    <p class="wish-status" id="wishStatus" hidden></p>
+
+    <div class="wish-reveal" id="wishReveal" hidden>
+      <p class="paper-text center">
+        Permintaanmu sudah terkirim ke bintang ✨<br>
+        Semoga semuanya segera terkabul, sayang 🤍
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ PAGE 7 — RAMALAN (birthday personality fortune) ============ -->
+  <section class="page has-back" id="page-game" data-page="game" hidden>
+    <button class="btn-back" data-goto="menu">‹ Back</button>
+    <h2 class="script-lg center">Ramalan Ulang Tahun Tahun Ini</h2>
+
+    <div class="quiz-progress"><span id="quizProgress">Soal 1/5</span></div>
+
+    <div class="quiz-card" id="quizCard">
+      <!-- diisi otomatis lewat script.js -->
+    </div>
+
+    <div class="quiz-result" id="quizResult" hidden>
+      <p class="script-lg" id="quizScoreText"></p>
+      <p class="paper-text center" id="quizScoreNote"></p>
+      <button class="btn-gold" id="quizRestart">Ramal Lagi</button>
+    </div>
+  </section>
+
+</main>
+
+<canvas id="confetti"></canvas>
+
+<script src="script.js"></script>
+</body>
+</html>
