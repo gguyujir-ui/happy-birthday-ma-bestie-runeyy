@@ -336,7 +336,7 @@ html, body{
    ========================================================= */
 .collage{
   position: relative;
-  width: 300px;
+  width: 350px;
   max-width: 100%;
   height: 300px;
   margin: 12px auto 26px;
@@ -345,8 +345,8 @@ html, body{
 .collage__heart{
   position: absolute;
   top: 6px; left: 0;
-  width: 108px;
-  height: 106px;
+  width: 104px;
+  height: 102px;
   clip-path: path('M65 128C20 96 2 66 2 42 2 18 20 2 40 2c14 0 21 8 25 16 4-8 11-16 25-16 20 0 38 16 38 40 0 24-18 54-63 86z');
   background: linear-gradient(160deg, #f3c9dd, #d88fb0);
   box-shadow: 0 10px 22px rgba(0,0,0,.35);
@@ -357,17 +357,18 @@ html, body{
 
 .collage__butterfly{
   position: absolute;
-  top: 96px; left: 76px;
-  font-size: 2.3rem;
+  top: 90px; left: 72px;
+  font-size: 2.2rem;
   transform: rotate(-14deg);
   filter: drop-shadow(0 6px 10px rgba(0,0,0,.3));
+  z-index: 2;
 }
 
 .collage__polaroid{
   position: absolute;
-  top: 148px; left: 2px;
-  width: 92px;
-  height: 108px;
+  top: 142px; left: 0;
+  width: 88px;
+  height: 104px;
   background: #fff;
   padding: 6px 6px 16px;
   border-radius: 2px;
@@ -378,9 +379,9 @@ html, body{
 
 .collage__envelope{
   position: absolute;
-  top: 26px;
-  left: 112px;
-  width: 168px;
+  top: 18px;
+  left: 92px;
+  width: 148px;
 }
 .collage__note{
   position: relative;
@@ -388,7 +389,7 @@ html, body{
   background: var(--cream);
   color: var(--ink);
   border-radius: 4px;
-  padding: 16px 14px 40px;
+  padding: 14px 12px 36px;
   text-align: center;
   box-shadow: 0 16px 28px rgba(0,0,0,.4);
   transform: rotate(-1deg);
@@ -403,20 +404,30 @@ html, body{
 }
 .collage__rose{
   position: absolute;
-  top: -16px;
-  right: -10px;
+  top: -18px;
+  right: -12px;
   font-size: 2.1rem;
   filter: drop-shadow(0 6px 10px rgba(0,0,0,.3));
   z-index: 3;
 }
+.collage__rose--small{
+  position: absolute;
+  top: 46px;
+  left: -30px;
+  font-size: 1.5rem;
+  transform: rotate(-10deg);
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,.3));
+  z-index: 1;
+}
 
 .collage__strip{
   position: absolute;
-  top: 30px;
+  top: 22px;
   right: 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  z-index: 2;
 }
 .collage__strip-photo{
   width: 66px;
@@ -430,9 +441,23 @@ html, body{
 
 .collage__bloom{
   position: absolute;
-  bottom: 6px;
-  right: 56px;
-  font-size: 1.7rem;
+  bottom: 2px;
+  right: 78px;
+  font-size: 1.6rem;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,.3));
+}
+.collage__bloom--2{
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 1.3rem;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,.3));
+}
+.collage__bloom--3{
+  position: absolute;
+  top: 160px;
+  left: 96px;
+  font-size: 1.2rem;
   filter: drop-shadow(0 4px 8px rgba(0,0,0,.3));
 }
 
