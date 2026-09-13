@@ -14,6 +14,41 @@ kado-virtual/
 └── assets/         ← foto-foto (ganti dengan fotomu sendiri)
 ```
 
+## Mode Landscape Otomatis
+
+Situs ini didesain landscape (kayak video), jadi begitu dibuka di HP yang
+posisinya tegak (portrait), seluruh tampilan otomatis diputar 90° biar
+langsung landscape tanpa perlu diputar manual — persis kayak referensi
+yang kamu kasih. Kalau HP-nya memang sudah dimiringkan (landscape asli),
+tampil normal apa adanya.
+
+Catatan teknis kecil: ini pakai trik CSS (bukan API khusus yang belum
+tentu didukung semua browser), jadi kalau ada halaman yang isinya lebih
+panjang dari layar, tetap bisa di-scroll — cuma arah gesernya jadi
+menyamping (bukan naik-turun) karena efek putarannya. Ini keterbatasan
+wajar dari trik ini, bukan bug.
+
+## Maskot Penggiring
+
+Ada karakter kecil (blob pink imut) yang selalu nongol di pojok kanan
+bawah di semua halaman, dengan gelembung kata yang otomatis berubah
+sesuai halaman yang lagi dibuka — kasih semacam petunjuk/semangat ke
+penerima kado. Dia juga ikut heboh (mantul) di momen spesial: setelah
+wish terkirim, dan pas hasil Ramalan muncul.
+
+Mau ganti kata-katanya? Buka `script.js`, cari `mascotHints` untuk ubah
+petunjuk per halaman, atau `cheerMascot(...)` untuk ubah reaksi di
+momen spesial.
+
+## Halaman Wish Terkunci Sampai Terkirim
+
+Begitu penerima masuk ke halaman Wish, tombol "‹ Back" otomatis berubah
+jadi "🔒 Tulis dulu" dan terkunci — nggak bisa balik ke menu sebelum dia
+benar-benar menulis & mengirim permintaannya. Kalau dia coba tekan
+"Tiup Lilin" tanpa menulis apa-apa, kolom tulisannya akan bergoyang
+lembut plus muncul pesan "tulis dulu ya" — belum bisa lanjut. Begitu
+sudah menulis & mengirim, kuncinya otomatis terbuka.
+
 ## Cara personalisasi (paling penting)
 
 1. **Ganti foto** — timpa file di folder `assets/` dengan fotomu, pakai nama
@@ -153,7 +188,8 @@ Semua halaman "Back" kembali ke Menu.
 
 - **Sentuh layar di mana saja** → muncul kerlip kecil (✨💖⭐💫) di titik
   yang disentuh. Berlaku di semua halaman.
-- **Kembang api sungguhan** (roket naik lalu meledak jadi percikan warna-warni)
+- **Kembang api sungguhan** (roket naik lalu meledak jadi percikan warna-warni,
+  dengan lapisan ledakan ganda + efek "crackle" susulan biar makin meriah)
   muncul otomatis saat: amplop dibuka, pertama masuk ke menu "Pilih
   Kejutannya", lilin di halaman Wish ditiup, dan saat hasil Ramalan
   muncul.

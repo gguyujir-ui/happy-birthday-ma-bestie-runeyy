@@ -22,14 +22,36 @@
 
 html, body{
   margin: 0;
-  min-height: 100%;
+  height: 100%;
   font-family: var(--font-body);
   color: var(--white);
   overflow-x: hidden;
+  overflow-y: auto;
+  background: var(--deep);
 }
 
-body{
-  background: var(--deep);
+/* =========================================================
+   MODE LANDSCAPE OTOMATIS
+   Kalau HP dipegang tegak (portrait), seluruh isi web diputar
+   90° biar langsung tampil landscape tanpa perlu diputar manual.
+   Kalau HP sudah landscape, tampil normal apa adanya.
+   ========================================================= */
+#rotateFrame{
+  width: 100%;
+  height: 100%;
+}
+@media screen and (orientation: portrait){
+  #rotateFrame{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100vh;
+    height: 100vw;
+    transform-origin: 0 0;
+    transform: rotate(-90deg);
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 }
 
 /* ---------- Background ---------- */
@@ -69,7 +91,7 @@ body{
   position: relative;
   z-index: 2;
   max-width: 460px;
-  min-height: 100vh;
+  min-height: 100%;
   margin: 0 auto;
   padding: 48px 24px 64px;
   display: flex;
@@ -81,7 +103,7 @@ body{
 @media (min-width: 500px){
   .stage{
     margin: 28px auto;
-    min-height: calc(100vh - 56px);
+    min-height: calc(100% - 56px);
     border-radius: 28px;
     box-shadow: 0 30px 80px rgba(0,0,0,.45);
     background: rgba(20,6,32,.15);
@@ -96,6 +118,8 @@ body{
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  gap: 6px;
   opacity: 0;
   transform: translateY(10px) scale(.985);
   transition: opacity .28s cubic-bezier(.22,.8,.32,1), transform .32s cubic-bezier(.22,.8,.32,1);
@@ -175,7 +199,7 @@ body{
 
 /* ---------- Buttons ---------- */
 .btn-gold{
-  margin-top: auto;
+  margin-top: 18px;
   padding: 14px 34px;
   border: none;
   border-radius: 999px;
@@ -426,7 +450,7 @@ body{
   text-decoration-color: rgba(255,255,255,.6);
   cursor: pointer;
   padding: 10px 16px;
-  margin-top: auto;
+  margin-top: 18px;
 }
 
 .paper-text{
@@ -587,7 +611,7 @@ body{
 }
 
 .music-player{
-  margin-top: auto;
+  margin-top: 20px;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -890,4 +914,139 @@ button:focus-visible{
 
 @media (prefers-reduced-motion: reduce){
   .backdrop{ animation: none; }
+}
+
+/* =========================================================
+   MASKOT PENGGIRING
+   ========================================================= */
+.mascot{
+  position: fixed;
+  right: 14px;
+  bottom: 16px;
+  z-index: 45;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  pointer-events: none;
+}
+.mascot__bubble{
+  background: #fff;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: .72rem;
+  line-height: 1.3;
+  padding: 8px 12px;
+  border-radius: 14px;
+  max-width: 150px;
+  text-align: left;
+  box-shadow: 0 8px 18px rgba(0,0,0,.35);
+  position: relative;
+  animation: bubblePop .35s ease both;
+}
+.mascot__bubble::after{
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  right: 20px;
+  width: 0; height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #fff;
+}
+@keyframes bubblePop{
+  from{ opacity: 0; transform: translateY(6px) scale(.85); }
+  to{ opacity: 1; transform: translateY(0) scale(1); }
+}
+.mascot__body{
+  width: 62px;
+  height: 62px;
+  position: relative;
+  animation: mascotBob 2.6s ease-in-out infinite;
+}
+.mascot__blob{
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 35% 28%, #ffe1f0, #ff8fc4 70%);
+  border-radius: 50% 50% 46% 46% / 58% 58% 42% 42%;
+  box-shadow: 0 10px 20px rgba(0,0,0,.35);
+}
+.mascot__blob::after{
+  /* tiny stub tail/ear for extra cuteness */
+  content: '';
+  position: absolute;
+  top: -8px; left: 22px;
+  width: 12px; height: 16px;
+  background: inherit;
+  border-radius: 50% 50% 0 0;
+  transform: rotate(-8deg);
+}
+.mascot__eye{
+  position: absolute;
+  width: 6px; height: 8px;
+  background: var(--ink);
+  border-radius: 50%;
+  top: 26px;
+  animation: mascotBlink 4.2s ease-in-out infinite;
+}
+.mascot__eye--l{ left: 18px; }
+.mascot__eye--r{ left: 36px; }
+@keyframes mascotBlink{
+  0%, 92%, 100%{ transform: scaleY(1); }
+  95%{ transform: scaleY(.1); }
+}
+.mascot__cheek{
+  position: absolute;
+  width: 9px; height: 6px;
+  background: #ff9ecb;
+  border-radius: 50%;
+  top: 33px;
+  opacity: .85;
+}
+.mascot__cheek--l{ left: 9px; }
+.mascot__cheek--r{ left: 42px; }
+@keyframes mascotBob{
+  0%, 100%{ transform: translateY(0) rotate(-3deg); }
+  50%{ transform: translateY(-9px) rotate(3deg); }
+}
+.mascot.is-excited .mascot__body{
+  animation: mascotJump .5s ease;
+}
+@keyframes mascotJump{
+  0%{ transform: translateY(0) scale(1); }
+  35%{ transform: translateY(-18px) scale(1.08); }
+  60%{ transform: translateY(2px) scale(.96); }
+  100%{ transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 380px){
+  .mascot__body{ width: 50px; height: 50px; }
+  .mascot__bubble{ font-size: .66rem; max-width: 128px; }
+}
+
+/* =========================================================
+   KUNCI HALAMAN WISH (nggak bisa Back sebelum wish dikirim)
+   ========================================================= */
+.btn-back:disabled{
+  opacity: .55;
+  cursor: not-allowed;
+  filter: grayscale(.3);
+}
+.btn-back:disabled:active{ transform: none; }
+
+@keyframes shakeX{
+  0%, 100%{ transform: translateX(0); }
+  20%{ transform: translateX(-7px); }
+  40%{ transform: translateX(7px); }
+  60%{ transform: translateX(-5px); }
+  80%{ transform: translateX(5px); }
+}
+.wish-input.shake{
+  animation: shakeX .4s ease;
+  outline: 2px solid var(--rose);
+}
+.wish-status.is-nudge{
+  color: #ffd7e0;
+  font-weight: 700;
 }

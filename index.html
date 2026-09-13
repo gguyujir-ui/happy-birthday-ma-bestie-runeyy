@@ -12,6 +12,8 @@
 </head>
 <body>
 
+<div id="rotateFrame">
+
 <div class="backdrop"></div>
 <div class="floaters" id="floaters"></div>
 
@@ -20,7 +22,7 @@
   <!-- ============ PAGE 0 — COVER / ENVELOPE ============ -->
   <section class="page" id="page-cover" data-page="cover">
     <p class="eyebrow">untuk kamu,</p>
-    <h1 class="script-xl">aruna romeesaa</h1>
+    <h1 class="script-xl">Freya Anindya</h1>
     <p class="hint">tekan amplopnya</p>
 
     <button class="envelope" id="envelopeBtn" aria-label="Buka amplop">
@@ -192,7 +194,7 @@
 
   <!-- ============ PAGE 6 — WISH (blow the candles) ============ -->
   <section class="page has-back" id="page-wish" data-page="wish" hidden>
-    <button class="btn-back" data-goto="menu">‹ Back</button>
+    <button class="btn-back" id="wishBackBtn" data-goto="menu">‹ Back</button>
     <h2 class="script-lg center">Tutup Mata, Buat Permintaan</h2>
 
     <div class="cake" id="cake">
@@ -240,6 +242,20 @@
 </main>
 
 <canvas id="confetti"></canvas>
+
+<!-- ============ MASKOT PENGGIRING ============ -->
+<div class="mascot" id="mascot">
+  <div class="mascot__bubble" id="mascotBubble">Hai! Yuk buka amplopnya 💌</div>
+  <div class="mascot__body">
+    <span class="mascot__blob"></span>
+    <span class="mascot__cheek mascot__cheek--l"></span>
+    <span class="mascot__cheek mascot__cheek--r"></span>
+    <span class="mascot__eye mascot__eye--l"></span>
+    <span class="mascot__eye mascot__eye--r"></span>
+  </div>
+</div>
+
+</div><!-- /#rotateFrame -->
 
 <script src="script.js"></script>
 </body>

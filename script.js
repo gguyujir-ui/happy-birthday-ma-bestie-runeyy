@@ -46,17 +46,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
     if (history.replaceState) history.replaceState(null, '', '#' + name);
+    if (typeof updateMascot === 'function') updateMascot(name);
+    if (typeof updateWishLock === 'function') updateWishLock(name);
   }
 
   document.querySelectorAll('[data-goto]').forEach(el => {
     el.addEventListener('click', () => goTo(el.dataset.goto));
   });
 
+  /* ---------- Maskot penggiring ---------- */
+  const mascot = document.getElementById('mascot');
+  const mascotBubble = document.getElementById('mascotBubble');
+  const mascotHints = {
+    cover: 'Hai! Yuk buka amplopnya 💌',
+    letter: 'Coba tekan tulisannya di bawah~ 👉',
+    menu: 'Mau buka yang mana dulu nih?',
+    journey: 'Ini nih momen-momen kalian 📸',
+    moment: 'Baca pelan-pelan ya~ 🥹',
+    playlist: 'Sambil dengerin lagu ini yuk 🎶',
+    wish: 'Tulis dulu permintaanmu, baru boleh tiup lilinnya 🕯️',
+    game: 'Yuk coba tebak-tebak ramalannya 🔮'
+  };
+  function updateMascot(name){
+    if (!mascotBubble) return;
+    mascotBubble.textContent = mascotHints[name] || '';
+    mascotBubble.style.animation = 'none';
+    void mascotBubble.offsetWidth;
+    mascotBubble.style.animation = '';
+    if (mascot){
+      mascot.classList.remove('is-excited');
+      void mascot.offsetWidth;
+      mascot.classList.add('is-excited');
+    }
+  }
+  updateMascot('cover');
+
+  /* Buat maskot ikut heboh di momen-momen khusus (bukan cuma ganti halaman) */
+  function cheerMascot(text){
+    if (!mascotBubble) return;
+    mascotBubble.textContent = text;
+    mascotBubble.style.animation = 'none';
+    void mascotBubble.offsetWidth;
+    mascotBubble.style.animation = '';
+    if (mascot){
+      mascot.classList.remove('is-excited');
+      void mascot.offsetWidth;
+      mascot.classList.add('is-excited');
+    }
+  }
+
   /* First time opening the surprise menu deserves a little sky show */
   const openMenuBtn = document.getElementById('openMenuBtn');
   if (openMenuBtn){
     openMenuBtn.addEventListener('click', () => {
-      setTimeout(() => fireworksShow(3), 200);
+      setTimeout(() => { fireworksShow(6); burstConfetti(); }, 200);
     });
   }
 
@@ -65,9 +108,31 @@ document.addEventListener('DOMContentLoaded', () => {
   if (envelopeBtn){
     envelopeBtn.addEventListener('click', () => {
       envelopeBtn.classList.add('is-open');
-      fireworksShow(2);
+      fireworksShow(4);
+      burstConfetti();
+      attemptRealLandscapeLock(); // enhancement kalau browser-nya support
       setTimeout(() => goTo('letter'), 650);
     });
+  }
+
+  /* Percobaan mengunci orientasi layar sungguhan (bukan trik CSS) —
+     hanya berhasil di sebagian browser (biasanya Chrome Android dalam
+     mode fullscreen). Kalau gagal/tidak didukung, trik CSS auto-rotate
+     di style.css tetap jalan sebagai cadangan, jadi aman diabaikan. */
+  function attemptRealLandscapeLock(){
+    try {
+      const el = document.documentElement;
+      const request = el.requestFullscreen || el.webkitRequestFullscreen;
+      if (request){
+        request.call(el).then(() => {
+          if (screen.orientation && screen.orientation.lock){
+            screen.orientation.lock('landscape').catch(() => {});
+          }
+        }).catch(() => {});
+      } else if (screen.orientation && screen.orientation.lock){
+        screen.orientation.lock('landscape').catch(() => {});
+      }
+    } catch (e) { /* diamkan saja, fallback CSS yang jalan */ }
   }
 
   /* ---------- Music player (Moment page) ---------- */
@@ -95,21 +160,43 @@ document.addEventListener('DOMContentLoaded', () => {
   const wishInput = document.getElementById('wishInput');
   const wishStatus = document.getElementById('wishStatus');
   const wishReveal = document.getElementById('wishReveal');
+  const wishBackBtn = document.getElementById('wishBackBtn');
+
+  function updateWishLock(name){
+    if (!wishBackBtn) return;
+    if (name !== 'wish') return;
+    const alreadySent = cake && cake.classList.contains('is-blown');
+    wishBackBtn.disabled = !alreadySent;
+    wishBackBtn.textContent = alreadySent ? '‹ Back' : '🔒 Tulis dulu';
+  }
 
   if (blowBtn){
     blowBtn.addEventListener('click', () => {
       if (cake.classList.contains('is-blown')) return;
-      cake.classList.add('is-blown');
-      blowBtn.classList.add('is-hidden');
-      setTimeout(() => { wishReveal.hidden = false; }, 300);
-      burstConfetti();
-      fireworksShow(3);
 
       const wishText = (wishInput && wishInput.value.trim()) || '';
 
       if (!wishText){
-        return; // tidak ada yang ditulis, tidak perlu kirim apa-apa
+        // Belum nulis apa-apa — kasih nudge lembut, jangan biarkan lanjut.
+        wishInput.classList.remove('shake');
+        void wishInput.offsetWidth;
+        wishInput.classList.add('shake');
+        wishInput.focus();
+        wishStatus.hidden = false;
+        wishStatus.classList.add('is-nudge');
+        wishStatus.textContent = 'Tulis dulu permintaanmu ya, baru bisa ditiup lilinnya 🥺';
+        return;
       }
+
+      wishStatus.classList.remove('is-nudge');
+      wishStatus.hidden = true;
+      cake.classList.add('is-blown');
+      blowBtn.classList.add('is-hidden');
+      updateWishLock('wish'); // sekarang boleh Back
+      setTimeout(() => { wishReveal.hidden = false; }, 300);
+      burstConfetti();
+      fireworksShow(6);
+      cheerMascot('Yeay, wish-nya udah terbang ke bintang! ✨');
 
       if (!emailjsReady){
         // Belum di-setup — lihat README.md bagian "Setup kirim Wish ke email".
@@ -281,7 +368,8 @@ document.addEventListener('DOMContentLoaded', () => {
     quizScoreNote.textContent = result.note;
 
     burstConfetti();
-    fireworksShow(2);
+    fireworksShow(6);
+    cheerMascot(`Taraa~ kamu itu ${result.title}!`);
     sendQuizResultByEmail(result, quizAnswers);
   }
 
@@ -344,8 +432,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function resizeCanvas(){
     if (!canvas) return;
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    // pakai ukuran layout sendiri (bukan window.innerWidth/Height) supaya
+    // tetap presisi walau seluruh halaman lagi diputar mode landscape
+    canvas.width = canvas.offsetWidth || window.innerWidth;
+    canvas.height = canvas.offsetHeight || window.innerHeight;
   }
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
@@ -356,71 +446,116 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function burstConfetti(){
     if (!ctx) return;
-    const colors = ['#ff2e93', '#eab654', '#fff8f0', '#c81d4f', '#7fdcff'];
-    const cx = window.innerWidth / 2;
+    const colors = ['#ff2e93', '#eab654', '#fff8f0', '#c81d4f', '#7fdcff', '#ff9ecb', '#b98cff'];
+    const cx = canvas.width / 2;
 
-    for (let i = 0; i < 90; i++){
+    for (let i = 0; i < 140; i++){
       confettiParticles.push({
-        x: cx + (Math.random() - 0.5) * 60,
-        y: window.innerHeight * 0.55,
-        vx: (Math.random() - 0.5) * 9,
-        vy: -Math.random() * 11 - 3,
-        size: 4 + Math.random() * 5,
+        x: cx + (Math.random() - 0.5) * 90,
+        y: canvas.height * 0.5,
+        vx: (Math.random() - 0.5) * 12,
+        vy: -Math.random() * 13 - 4,
+        size: 4 + Math.random() * 6,
         color: colors[Math.floor(Math.random() * colors.length)],
         rot: Math.random() * Math.PI,
-        vr: (Math.random() - 0.5) * 0.3,
+        vr: (Math.random() - 0.5) * 0.35,
         life: 0,
-        maxLife: 90 + Math.random() * 30
+        maxLife: 100 + Math.random() * 40
       });
     }
     ensureLoop();
   }
 
-  // A firework = a rocket that climbs then bursts into a ring of sparks.
+  // A firework = a rocket that climbs then bursts into a ring of sparks
+  // (plus a second inner ring + a quick "crackle" pop for extra drama).
   const fireworkPalettes = [
     ['#ff6ec7', '#ffd1e8', '#eab654'],
     ['#7fdcff', '#ffffff', '#eab654'],
     ['#ff2e93', '#fff2c2', '#c81d4f'],
-    ['#eab654', '#fff8f0', '#ff9ecb']
+    ['#eab654', '#fff8f0', '#ff9ecb'],
+    ['#b98cff', '#ffe1f5', '#7fdcff'],
+    ['#ff5252', '#ffe27a', '#ffffff']
   ];
 
-  function spawnRocket(targetX, targetY){
+  function spawnRocket(targetX, targetY, big){
     const palette = fireworkPalettes[Math.floor(Math.random() * fireworkPalettes.length)];
     rockets.push({
-      x: targetX + (Math.random() - 0.5) * 20,
-      y: window.innerHeight + 10,
+      x: targetX + (Math.random() - 0.5) * 26,
+      y: canvas.height + 10,
       targetY,
-      vy: -(9 + Math.random() * 2.5),
+      vy: -(10 + Math.random() * 3),
       trail: [],
-      palette
+      palette,
+      big
     });
     ensureLoop();
   }
 
-  function explode(x, y, palette){
-    const count = 46;
-    for (let i = 0; i < count; i++){
-      const angle = (Math.PI * 2 * i) / count + Math.random() * 0.2;
-      const speed = 2 + Math.random() * 3.2;
+  function explode(x, y, palette, big){
+    const ringCount = big ? 70 : 54;
+    for (let i = 0; i < ringCount; i++){
+      const angle = (Math.PI * 2 * i) / ringCount + Math.random() * 0.15;
+      const speed = (big ? 2.6 : 2) + Math.random() * (big ? 4.2 : 3.4);
       sparks.push({
         x, y,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
         color: palette[Math.floor(Math.random() * palette.length)],
-        size: 1.6 + Math.random() * 1.8,
+        size: 1.6 + Math.random() * 2,
         life: 0,
-        maxLife: 50 + Math.random() * 30
+        maxLife: 55 + Math.random() * 35,
+        twinkle: Math.random() < 0.35
       });
+    }
+    // cincin kedua di dalam, warnanya beda dikit — biar keliatan berlapis
+    const innerCount = Math.floor(ringCount * 0.5);
+    for (let i = 0; i < innerCount; i++){
+      const angle = (Math.PI * 2 * i) / innerCount + Math.random() * 0.3;
+      const speed = 1 + Math.random() * 1.6;
+      sparks.push({
+        x, y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        color: '#fff8f0',
+        size: 1 + Math.random() * 1.3,
+        life: 0,
+        maxLife: 30 + Math.random() * 20,
+        twinkle: true
+      });
+    }
+    // "crackle" — beberapa percikan meledak lagi kecil-kecil sesaat kemudian
+    if (big || Math.random() < 0.6){
+      setTimeout(() => {
+        for (let c = 0; c < 3; c++){
+          const cx = x + (Math.random() - 0.5) * 40;
+          const cy = y + (Math.random() - 0.5) * 40;
+          for (let i = 0; i < 12; i++){
+            const angle = Math.random() * Math.PI * 2;
+            const speed = .8 + Math.random() * 1.6;
+            sparks.push({
+              x: cx, y: cy,
+              vx: Math.cos(angle) * speed,
+              vy: Math.sin(angle) * speed,
+              color: palette[Math.floor(Math.random() * palette.length)],
+              size: 1 + Math.random(),
+              life: 0,
+              maxLife: 24 + Math.random() * 16,
+              twinkle: true
+            });
+          }
+        }
+      }, 160 + Math.random() * 120);
     }
   }
 
   function fireworksShow(count){
     for (let i = 0; i < count; i++){
       setTimeout(() => {
-        const x = window.innerWidth * (0.25 + Math.random() * 0.5);
-        const y = window.innerHeight * (0.18 + Math.random() * 0.22);
-        spawnRocket(x, y);
-      }, i * 420 + Math.random() * 220);
+        const x = canvas.width * (0.18 + Math.random() * 0.64);
+        const y = canvas.height * (0.15 + Math.random() * 0.28);
+        const big = i === 0 || Math.random() < 0.3;
+        spawnRocket(x, y, big);
+      }, i * 260 + Math.random() * 180);
     }
   }
 
@@ -452,9 +587,12 @@ document.addEventListener('DOMContentLoaded', () => {
       r.y += r.vy;
 
       ctx.save();
-      ctx.globalAlpha = .9;
+      ctx.globalAlpha = .95;
       ctx.strokeStyle = r.palette[0];
-      ctx.lineWidth = 2;
+      ctx.shadowColor = r.palette[0];
+      ctx.shadowBlur = 10;
+      ctx.lineWidth = 2.6;
+      ctx.lineCap = 'round';
       ctx.beginPath();
       r.trail.forEach((pt, i) => i === 0 ? ctx.moveTo(pt.x, pt.y) : ctx.lineTo(pt.x, pt.y));
       ctx.lineTo(r.x, r.y);
@@ -462,7 +600,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.restore();
 
       if (r.y <= r.targetY){
-        explode(r.x, r.y, r.palette);
+        explode(r.x, r.y, r.palette, r.big);
         r.done = true;
       }
     });
@@ -478,11 +616,12 @@ document.addEventListener('DOMContentLoaded', () => {
       s.life++;
 
       const alpha = Math.max(0, 1 - s.life / s.maxLife);
+      const twinkleMul = s.twinkle ? (0.5 + Math.abs(Math.sin(s.life * 0.9))) : 1;
       ctx.save();
-      ctx.globalAlpha = alpha;
+      ctx.globalAlpha = alpha * twinkleMul;
       ctx.fillStyle = s.color;
       ctx.shadowColor = s.color;
-      ctx.shadowBlur = 8;
+      ctx.shadowBlur = s.twinkle ? 12 : 8;
       ctx.beginPath();
       ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
       ctx.fill();
