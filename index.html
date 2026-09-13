@@ -33,29 +33,37 @@
     <p class="tap-note">ketuk untuk lanjut</p>
   </section>
 
-  <!-- ============ PAGE 1 — LETTER ============ -->
+  <!-- ============ PAGE 1 — LETTER (photo collage, ala referensi) ============ -->
   <section class="page" id="page-letter" data-page="letter" hidden>
-    <div class="letter-scene">
-      <div class="photo-heart">
-        <img src="assets/photo-main.jpg" alt="Foto kamu" onerror="this.style.display='none'; this.parentElement.classList.add('ph-empty')">
+    <div class="collage">
+      <div class="collage__heart">
+        <img src="assets/photo-1.jpg" alt="" onerror="this.style.display='none'; this.parentElement.classList.add('ph-empty')">
       </div>
 
-      <div class="paper-card">
-        <h2 class="script-lg">Happy Birthday</h2>
-        <p class="paper-text">
-          Selamat ulang tahun, sayang 🤍 Semoga hari ini secerah senyummu,
-          dan tahun ini membawa lebih banyak alasan untuk bahagia.
-        </p>
+      <span class="collage__butterfly">🦋</span>
+
+      <div class="collage__polaroid">
+        <img src="assets/photo-2.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')">
       </div>
 
-      <div class="polaroid-strip">
-        <div class="mini-polaroid"><img src="assets/photo-1.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></div>
-        <div class="mini-polaroid"><img src="assets/photo-2.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></div>
-        <div class="mini-polaroid"><img src="assets/photo-3.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></div>
+      <div class="collage__envelope">
+        <span class="collage__rose collage__rose--1">🌹</span>
+        <div class="collage__note">
+          <p class="script-lg">Happy<br>Birthday</p>
+          <span class="collage__note-date">untuk kamu, Freya 🤍</span>
+        </div>
       </div>
+
+      <div class="collage__strip">
+        <div class="collage__strip-photo"><img src="assets/photo-3.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></div>
+        <div class="collage__strip-photo"><img src="assets/photo-p1.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></div>
+        <div class="collage__strip-photo"><img src="assets/photo-p2.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></div>
+      </div>
+
+      <span class="collage__bloom">🌸</span>
     </div>
 
-    <button class="btn-gold" id="openMenuBtn" data-goto="menu">Buka Kejutannya</button>
+    <button class="tap-surprise" id="openMenuBtn" data-goto="menu">Tekan untuk Kejutan</button>
   </section>
 
   <!-- ============ PAGE 2 — MENU ============ -->
@@ -79,7 +87,7 @@
         <span class="menu-icon">🕯️</span>
         <span class="script-sm">Wish</span>
       </button>
-      <button class="menu-item menu-item--wide" data-goto="game">
+      <button class="menu-item" data-goto="game">
         <span class="menu-icon">🔮</span>
         <span class="script-sm">Ramalan</span>
       </button>

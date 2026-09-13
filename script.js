@@ -21,13 +21,29 @@ if (emailjsReady){
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ---------- Page navigation ---------- */
+  /* ---------- Page navigation (smooth crossfade, not an abrupt cut) ---------- */
   const pages = Array.from(document.querySelectorAll('.page'));
 
   function goTo(name){
-    pages.forEach(p => {
-      p.hidden = p.dataset.page !== name;
-    });
+    const current = pages.find(p => !p.hidden);
+    const next = pages.find(p => p.dataset.page === name);
+    if (!next || current === next) return;
+
+    if (current){
+      current.classList.add('page-leaving');
+      window.setTimeout(() => {
+        current.hidden = true;
+        current.classList.remove('page-leaving');
+        next.hidden = false;
+        next.classList.remove('page-anim');
+        void next.offsetWidth; // reflow, biar animasi masuknya keputer ulang
+        next.classList.add('page-anim');
+      }, 200);
+    } else {
+      next.hidden = false;
+      next.classList.add('page-anim');
+    }
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
     if (history.replaceState) history.replaceState(null, '', '#' + name);
   }
@@ -106,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
         message: wishText,
+        source: 'Wish',
         sent_at: new Date().toLocaleString('id-ID')
       }).then(() => {
         wishStatus.textContent = 'Permintaanmu berhasil terkirim 🤍';
@@ -144,24 +161,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const quizQuestions = [
     {
-      q: 'Kado ulang tahun yang paling bikin kamu senang?',
-      options: ['Ngumpul rame-rame sama teman', 'Trip dadakan ke tempat baru', 'Me-time & tidur nyenyak', 'Waktu berkualitas sama orang tersayang']
+      q: 'Kalau ulang tahunmu tahun ini adalah sebuah lagu, iramanya kayak apa?',
+      options: [
+        '🎉 Upbeat, bikin semua orang ikut goyang',
+        '🧭 Nada petualangan, penuh kejutan',
+        '🌙 Slow, healing, syahdu',
+        '💌 Manis, related sama satu orang spesial'
+      ]
     },
     {
-      q: 'Kalau libur panjang, maunya ngapain?',
-      options: ['Nongkrong bareng rame-rame', 'Explore kota/tempat baru', 'Rebahan, nonton, no distraction', 'Video call / kumpul sama orang terdekat']
+      q: 'Kalau tahun ini kamu jadi karakter utama sebuah film, ceritanya soal…',
+      options: [
+        '🎊 Ngumpulin party crew paling seru sejagat',
+        '🗺️ Explore dunia yang belum pernah disentuh',
+        '🍃 Belajar pelan-pelan buat lebih damai sama diri sendiri',
+        '🏡 Nemuin arti "rumah" lewat orang-orang tersayang'
+      ]
     },
     {
-      q: 'Vibe kamu belakangan ini gimana?',
-      options: ['Ramai & penuh energi', 'Pengen coba hal baru terus', 'Butuh ketenangan', 'Kangen orang-orang terdekat']
+      q: 'Satu skill baru yang pengen kamu unlock tahun ini?',
+      options: [
+        '😄 Jago bikin siapa aja langsung akrab',
+        '🎢 Berani ambil risiko & lompat ke hal baru',
+        '🧘 Lebih tenang, nggak gampang overthinking',
+        '💞 Lebih ekspresif nunjukin sayang ke orang terdekat'
+      ]
     },
     {
-      q: 'Playlist ulang tahunmu isinya lagu…',
-      options: ['Yang bikin joget rame-rame', 'Yang energik buat road trip', 'Yang mellow & healing', 'Yang penuh kenangan sama orang spesial']
+      q: 'Kalau ada "soundtrack tahun ini" buat kamu, judulnya…',
+      options: [
+        '"Party Sampai Pagi"',
+        '"Jalan yang Belum Pernah Kulewati"',
+        '"Napas Panjang, Pelan-Pelan"',
+        '"Untukmu, Selalu"'
+      ]
     },
     {
-      q: 'Harapan terbesarmu tahun ini?',
-      options: ['Ketemu lebih banyak circle asik', 'Wujudin mimpi/petualangan baru', 'Lebih damai sama diri sendiri', 'Makin dekat sama orang-orang tersayang']
+      q: 'Kado terbaik yang kamu harap datang tahun ini (selain kado ini, hehe)?',
+      options: [
+        '🎈 Lebih banyak circle & cerita seru bareng teman',
+        '✈️ Satu petualangan besar yang bikin deg-degan',
+        '🕊️ Ketenangan & waktu buat diri sendiri',
+        '🤍 Lebih banyak waktu sama orang-orang tersayang'
+      ]
     }
   ];
 
@@ -174,6 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let quizIndex = 0;
   let typeTally = [0, 0, 0, 0]; // sejajar urutan dengan personalityTypes
+  let quizAnswers = []; // dikumpulin buat dikirim ke email nanti
 
   function renderQuestion(){
     if (!quizCard) return;
@@ -183,6 +226,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const item = quizQuestions[quizIndex];
     quizProgress.textContent = `Soal ${quizIndex + 1}/${quizQuestions.length}`;
+
+    quizCard.classList.remove('quiz-anim');
+    void quizCard.offsetWidth; // reflow supaya animasinya keputer ulang tiap soal
+    quizCard.classList.add('quiz-anim');
 
     quizCard.innerHTML = '';
     const qEl = document.createElement('p');
@@ -201,6 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
         Array.from(optsWrap.children).forEach(b => b.disabled = true);
         btn.classList.add('is-selected');
         typeTally[i]++;
+        quizAnswers.push({ q: item.q, a: opt });
 
         setTimeout(() => {
           quizIndex++;
@@ -234,12 +282,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     burstConfetti();
     fireworksShow(2);
+    sendQuizResultByEmail(result, quizAnswers);
+  }
+
+  function sendQuizResultByEmail(result, answers){
+    if (!emailjsReady) {
+      console.warn('EmailJS belum dikonfigurasi. Hasil Ramalan belum terkirim ke email.');
+      return;
+    }
+    const answerLines = answers
+      .map((a, i) => `${i + 1}. ${a.q}\n   Jawaban: ${a.a}`)
+      .join('\n\n');
+    const summary =
+      `Hasil Ramalan: ${result.title}\n\n` +
+      `Jawaban-jawabannya:\n${answerLines}`;
+
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      message: summary,
+      source: 'Ramalan',
+      sent_at: new Date().toLocaleString('id-ID')
+    }).catch(() => {
+      console.warn('Gagal mengirim hasil Ramalan ke email.');
+    });
   }
 
   if (quizRestart){
     quizRestart.addEventListener('click', () => {
       quizIndex = 0;
       typeTally = [0, 0, 0, 0];
+      quizAnswers = [];
       renderQuestion();
     });
   }

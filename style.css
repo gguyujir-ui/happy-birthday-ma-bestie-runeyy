@@ -96,13 +96,26 @@ body{
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: pageIn .5s ease both;
+  opacity: 0;
+  transform: translateY(10px) scale(.985);
+  transition: opacity .28s cubic-bezier(.22,.8,.32,1), transform .32s cubic-bezier(.22,.8,.32,1);
 }
+.page.page-anim,
+.page:first-of-type:not([hidden]){
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.page.page-leaving{
+  opacity: 0;
+  transform: translateY(-10px) scale(.985);
+  transition: opacity .18s ease, transform .18s ease;
+}
+.page[hidden]{ display: none; }
+
 @keyframes pageIn{
   from{ opacity: 0; transform: translateY(14px); }
   to{ opacity: 1; transform: translateY(0); }
 }
-.page[hidden]{ display: none; }
 
 /* ---------- Typography ---------- */
 .script-xl{
@@ -295,37 +308,127 @@ body{
 }
 
 /* =========================================================
-   PAGE — Letter
+   PAGE — Letter (photo collage + "tap for surprise")
    ========================================================= */
-.letter-scene{
+.collage{
   position: relative;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 18px;
-  margin-bottom: 20px;
+  width: 300px;
+  max-width: 100%;
+  height: 300px;
+  margin: 12px auto 26px;
 }
 
-.photo-heart{
-  width: 130px;
-  height: 130px;
+.collage__heart{
+  position: absolute;
+  top: 6px; left: 0;
+  width: 108px;
+  height: 106px;
   clip-path: path('M65 128C20 96 2 66 2 42 2 18 20 2 40 2c14 0 21 8 25 16 4-8 11-16 25-16 20 0 38 16 38 40 0 24-18 54-63 86z');
   background: linear-gradient(160deg, #f3c9dd, #d88fb0);
-  box-shadow: 0 10px 24px rgba(0,0,0,.35);
+  box-shadow: 0 10px 22px rgba(0,0,0,.35);
+  transform: rotate(-6deg);
 }
-.photo-heart img{ width: 100%; height: 100%; object-fit: cover; display: block; }
-.photo-heart.ph-empty{ display: flex; align-items: center; justify-content: center; }
+.collage__heart img{ width: 100%; height: 100%; object-fit: cover; display: block; }
+.collage__heart.ph-empty{ display: flex; align-items: center; justify-content: center; }
 
-.paper-card{
+.collage__butterfly{
+  position: absolute;
+  top: 96px; left: 76px;
+  font-size: 2.3rem;
+  transform: rotate(-14deg);
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,.3));
+}
+
+.collage__polaroid{
+  position: absolute;
+  top: 148px; left: 2px;
+  width: 92px;
+  height: 108px;
+  background: #fff;
+  padding: 6px 6px 16px;
+  border-radius: 2px;
+  box-shadow: 0 10px 20px rgba(0,0,0,.3);
+  transform: rotate(-7deg);
+}
+.collage__polaroid img{ width: 100%; height: 100%; object-fit: cover; display: block; background: #ddd; }
+
+.collage__envelope{
+  position: absolute;
+  top: 26px;
+  left: 112px;
+  width: 168px;
+}
+.collage__note{
+  position: relative;
+  z-index: 2;
   background: var(--cream);
   color: var(--ink);
-  border-radius: 6px;
-  padding: 22px 22px 18px;
-  box-shadow: 0 16px 30px rgba(0,0,0,.35);
+  border-radius: 4px;
+  padding: 16px 14px 40px;
+  text-align: center;
+  box-shadow: 0 16px 28px rgba(0,0,0,.4);
   transform: rotate(-1deg);
 }
-.paper-card .script-lg{ color: var(--rose); margin-bottom: 10px; }
+.collage__note .script-lg{ color: var(--rose); margin: 0; line-height: 1.05; }
+.collage__note-date{
+  display: block;
+  margin-top: 8px;
+  font-size: .68rem;
+  letter-spacing: .03em;
+  color: rgba(58,36,64,.65);
+}
+.collage__rose{
+  position: absolute;
+  top: -16px;
+  right: -10px;
+  font-size: 2.1rem;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,.3));
+  z-index: 3;
+}
+
+.collage__strip{
+  position: absolute;
+  top: 30px;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.collage__strip-photo{
+  width: 66px;
+  height: 66px;
+  background: #fff;
+  padding: 4px;
+  border-radius: 2px;
+  box-shadow: 0 8px 16px rgba(0,0,0,.3);
+}
+.collage__strip-photo img{ width: 100%; height: 100%; object-fit: cover; display: block; background: #ddd; }
+
+.collage__bloom{
+  position: absolute;
+  bottom: 6px;
+  right: 56px;
+  font-size: 1.7rem;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,.3));
+}
+
+.tap-surprise{
+  background: none;
+  border: none;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: .88rem;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-color: rgba(255,255,255,.6);
+  cursor: pointer;
+  padding: 10px 16px;
+  margin-top: auto;
+}
+
 .paper-text{
   font-size: .95rem;
   line-height: 1.6;
@@ -333,23 +436,6 @@ body{
 }
 .paper-text.center{ text-align: center; }
 
-.polaroid-strip{
-  display: flex;
-  gap: 10px;
-}
-.mini-polaroid{
-  width: 64px;
-  height: 78px;
-  background: #fff;
-  padding: 5px 5px 12px;
-  border-radius: 2px;
-  box-shadow: 0 8px 16px rgba(0,0,0,.3);
-  transform: rotate(var(--r, 0deg));
-}
-.mini-polaroid:nth-child(1){ --r: -6deg; }
-.mini-polaroid:nth-child(2){ --r: 3deg; }
-.mini-polaroid:nth-child(3){ --r: -2deg; }
-.mini-polaroid img{ width: 100%; height: 100%; object-fit: cover; background: #ddd; }
 
 /* generic empty-photo placeholder */
 .ph-empty{
@@ -371,14 +457,23 @@ body{
    PAGE — Menu
    ========================================================= */
 .menu-grid{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 28px 18px;
-  margin-top: 12px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 14px;
+  margin-top: 18px;
   width: 100%;
+  overflow-x: auto;
+  padding: 6px 2px 14px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
+.menu-grid::-webkit-scrollbar{ display: none; }
 .menu-item{
   display: flex;
+  flex: 0 0 auto;
   flex-direction: column;
   align-items: center;
   gap: 8px;
@@ -386,7 +481,7 @@ body{
   border: none;
   color: var(--white);
   cursor: pointer;
-  padding: 14px 6px;
+  padding: 12px 8px;
   border-radius: 16px;
   transition: transform .2s ease, background .2s ease;
 }
@@ -395,17 +490,15 @@ body{
   background: rgba(255,255,255,.06);
 }
 .menu-icon{
-  font-size: 2.4rem;
+  font-size: 2.1rem;
   filter: drop-shadow(0 6px 14px rgba(255,180,220,.45));
 }
 .menu-item .script-sm{
+  font-size: 1.05rem;
+  white-space: nowrap;
   text-decoration: underline;
   text-underline-offset: 4px;
   text-decoration-color: rgba(255,255,255,.5);
-}
-.menu-item--wide{
-  grid-column: 1 / -1;
-  justify-self: center;
 }
 
 /* =========================================================
@@ -695,7 +788,10 @@ body{
   border-radius: 12px;
   padding: 22px 20px;
   box-shadow: 0 16px 30px rgba(0,0,0,.35);
-  animation: pageIn .4s ease both;
+  opacity: 0;
+}
+.quiz-card.quiz-anim{
+  animation: pageIn .35s cubic-bezier(.22,.8,.32,1) both;
 }
 .quiz-question{
   font-family: var(--font-body);
@@ -766,4 +862,32 @@ body{
 button:focus-visible{
   outline: 2px solid var(--gold);
   outline-offset: 3px;
+}
+
+/* ---------- Tactile press feedback (biar nggak berasa kaku) ---------- */
+.btn-gold,
+.btn-back,
+.menu-item,
+.quiz-option,
+.envelope,
+.play-btn,
+.cake{
+  transition: transform .16s cubic-bezier(.34,1.56,.64,1), filter .16s ease, background .15s ease, border-color .15s ease;
+}
+.btn-gold:active{ transform: scale(.94); }
+.btn-back:active{ transform: scale(.92); }
+.menu-item:active{ transform: scale(.93); }
+.quiz-option:active{ transform: scale(.97); }
+.envelope:active{ transform: scale(.96); }
+.play-btn:active{ transform: scale(.88); }
+
+/* subtle life in the backdrop so it never feels like a static image */
+@keyframes bgDrift{
+  0%, 100%{ filter: hue-rotate(0deg) saturate(1); }
+  50%{ filter: hue-rotate(10deg) saturate(1.08); }
+}
+.backdrop{ animation: bgDrift 16s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce){
+  .backdrop{ animation: none; }
 }

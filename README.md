@@ -17,7 +17,9 @@ kado-virtual/
 ## Cara personalisasi (paling penting)
 
 1. **Ganti foto** — timpa file di folder `assets/` dengan fotomu, pakai nama
-   file yang sama persis (mis. `photo-main.jpg`, `gallery-1.jpg`, dst), atau
+   file yang sama persis (mis. `photo-1.jpg` untuk foto hati, `photo-2.jpg`
+   untuk polaroid, `photo-3.jpg`/`photo-p1.jpg`/`photo-p2.jpg` untuk photo
+   strip di halaman pembuka, `gallery-1.jpg` dst untuk Journey), atau
    ubah `src="assets/..."` di `index.html` ke nama file barumu.
 2. **Ganti nama & pesan** — buka `index.html`, cari teks seperti
    `Freya Anindya` dan paragraf ucapan, ganti dengan nama dan kata-katamu
@@ -37,15 +39,21 @@ kado-virtual/
    ganti judul/isi hasil ramalannya. Urutan pilihan (A/B/C/D) di semua
    soal harus tetap konsisten mewakili tipe yang sama — cek komentar di
    atas array-nya.
-7. **Aktifkan kirim Wish ke email** — lihat bagian "Setup kirim Wish ke
-   email" di bawah, wajib dilakukan kalau mau fitur ini jalan.
+7. **Aktifkan kirim Wish & hasil Ramalan ke email** — lihat bagian "Setup
+   kirim ke email" di bawah, wajib dilakukan kalau mau fitur ini jalan.
 
-## Setup kirim Wish ke email
+## Setup kirim ke email
 
-Di halaman **Wish**, penerima bisa menulis permintaan lalu menekan
-"Tiup Lilin & Kirim Permintaan" — teks itu akan otomatis terkirim ke
-emailmu lewat layanan gratis [EmailJS](https://www.emailjs.com/). Karena
-GitHub Pages cuma bisa menyajikan file statis (tanpa server), semua situs
+Dua halaman mengirim isinya otomatis ke emailmu lewat layanan gratis
+[EmailJS](https://www.emailjs.com/) (dipakai template yang sama untuk
+keduanya):
+
+- **Wish** — begitu penerima menekan "Tiup Lilin & Kirim Permintaan",
+  teks permintaannya terkirim.
+- **Ramalan** — begitu hasil ramalannya muncul, jawaban dari kelima soal
+  beserta tipe hasilnya ikut terkirim diam-diam.
+
+Karena GitHub Pages cuma bisa menyajikan file statis (tanpa server), situs
 sejenis ini memang butuh layanan pihak ketiga seperti ini untuk urusan
 kirim-mengirim email.
 
@@ -55,12 +63,13 @@ Langkah setupnya (sekali saja, ±5 menit):
 2. Di dashboard, buka **Email Services → Add New Service**, sambungkan ke
    email pribadimu (mis. Gmail), lalu catat **Service ID**-nya.
 3. Buka **Email Templates → Create New Template**. Di bagian isi email,
-   pakai variabel `{{message}}` (isi permintaan) dan `{{sent_at}}` (waktu
-   kirim), contoh:
+   pakai variabel `{{source}}` (asalnya dari Wish atau Ramalan),
+   `{{message}}` (isinya), dan `{{sent_at}}` (waktu kirim), contoh:
    ```
-   Subject: Ada wish baru dari kado virtualmu 💌
+   Subject: Ada kiriman baru dari kado virtualmu 💌
 
-   Isi permintaan:
+   Dari halaman: {{source}}
+
    {{message}}
 
    Dikirim pada: {{sent_at}}
