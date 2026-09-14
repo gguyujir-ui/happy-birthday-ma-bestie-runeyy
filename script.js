@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------- Page navigation (smooth crossfade, not an abrupt cut) ---------- */
   const pages = Array.from(document.querySelectorAll('.page'));
+  const globalBackBtn = document.getElementById('globalBackBtn');
+  const pagesWithBack = ['journey', 'moment', 'playlist', 'wish', 'game'];
 
   function goTo(name){
     const current = pages.find(p => !p.hidden);
@@ -46,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
     if (history.replaceState) history.replaceState(null, '', '#' + name);
+    if (globalBackBtn) globalBackBtn.hidden = !pagesWithBack.includes(name);
     if (typeof updateMascot === 'function') updateMascot(name);
     if (typeof updateWishLock === 'function') updateWishLock(name);
   }
@@ -160,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const wishInput = document.getElementById('wishInput');
   const wishStatus = document.getElementById('wishStatus');
   const wishReveal = document.getElementById('wishReveal');
-  const wishBackBtn = document.getElementById('wishBackBtn');
+  const wishBackBtn = document.getElementById('globalBackBtn');
 
   function updateWishLock(name){
     if (!wishBackBtn) return;

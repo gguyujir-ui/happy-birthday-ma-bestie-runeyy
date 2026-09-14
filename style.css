@@ -216,9 +216,9 @@ html, body{
 .btn-gold:active{ transform: translateY(0); }
 
 .btn-back{
-  position: absolute;
-  top: 0;
-  right: 0;
+  position: fixed;
+  top: 16px;
+  right: 16px;
   padding: 8px 18px;
   border: none;
   border-radius: 999px;
@@ -228,8 +228,8 @@ html, body{
   font-weight: 700;
   font-size: .85rem;
   cursor: pointer;
-  box-shadow: 0 6px 16px rgba(0,0,0,.25);
-  z-index: 5;
+  box-shadow: 0 6px 16px rgba(0,0,0,.3);
+  z-index: 40;
 }
 .btn-back:hover{ filter: brightness(1.05); }
 
@@ -404,9 +404,10 @@ html, body{
 }
 .collage__rose{
   position: absolute;
-  top: -18px;
-  right: -12px;
-  font-size: 2.1rem;
+  top: -22px;
+  right: -14px;
+  width: 44px;
+  height: auto;
   filter: drop-shadow(0 6px 10px rgba(0,0,0,.3));
   z-index: 3;
 }
@@ -594,62 +595,107 @@ html, body{
 /* =========================================================
    PAGE — Moment
    ========================================================= */
-.moment-layout{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  width: 100%;
+.moment-scene{
+  position: relative;
+  width: 380px;
+  max-width: 100%;
+  height: 340px;
+  margin: 10px auto 20px;
 }
-.note-card{
+
+.moment-scene__name{
+  position: absolute;
+  top: -6px;
+  left: 8px;
+  font-size: 1.8rem;
+  margin: 0;
+  text-align: left;
+  z-index: 3;
+}
+
+.moment-scene__note{
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 250px;
   background: var(--cream);
   color: var(--ink);
-  padding: 20px;
+  padding: 14px 16px;
   border-radius: 4px;
-  box-shadow: 0 14px 26px rgba(0,0,0,.3);
-  transform: rotate(-1deg);
-  position: relative;
+  box-shadow: 0 14px 26px rgba(0,0,0,.35);
+  transform: rotate(-2deg);
 }
-.note-card::before{
+.moment-scene__note::before{
   content: '';
   position: absolute;
   inset: 0;
-  background-image: repeating-linear-gradient(rgba(0,0,0,.035) 0 1px, transparent 1px 26px);
+  background-image: repeating-linear-gradient(rgba(0,0,0,.035) 0 1px, transparent 1px 22px);
   pointer-events: none;
 }
+.moment-scene__note .paper-text{ font-size: .76rem; line-height: 1.5; }
 
-.framed-photo{
-  width: 140px;
-  height: 160px;
-  padding: 10px;
+.moment-scene__rose{
+  position: absolute;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,.35));
+  z-index: 2;
+}
+.moment-scene__rose--1{ top: 128px; left: -26px; width: 56px; height: auto; transform: rotate(-8deg); }
+.moment-scene__rose--2{ top: 172px; left: 2px; width: 42px; height: auto; transform: rotate(6deg); }
+.moment-scene__rose--3{ top: 204px; left: 36px; width: 34px; height: auto; transform: rotate(-4deg); }
+
+.moment-scene__frame{
+  position: absolute;
+  top: 30px;
+  left: 270px;
+  width: 100px;
+  height: 112px;
+  padding: 9px;
   background: linear-gradient(135deg, #f7d488, #a6752c, #f7d488);
   border-radius: 4px;
-  box-shadow: 0 14px 26px rgba(0,0,0,.35);
+  box-shadow: 0 16px 28px rgba(0,0,0,.4);
+  transform: rotate(2deg);
+  z-index: 2;
 }
-.framed-photo img{ width: 100%; height: 100%; object-fit: cover; display: block; background: #ddd; }
-.framed-photo--sm{ width: 92px; height: 108px; padding: 6px; }
+.moment-scene__frame img{ width: 100%; height: 100%; object-fit: cover; display: block; background: #ddd; }
 
-.roses{
-  font-size: 1.6rem;
-  margin: 6px 0 4px;
-  filter: drop-shadow(0 6px 10px rgba(0,0,0,.3));
+.moment-scene__frame-rose{
+  position: absolute;
+  top: 4px;
+  left: 350px;
+  width: 40px;
+  height: auto;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,.35));
+  z-index: 3;
 }
 
-.music-player{
-  margin-top: 20px;
+.moment-scene__camera{
+  position: absolute;
+  top: 150px;
+  left: 285px;
+  font-size: 2.2rem;
+  filter: drop-shadow(0 8px 12px rgba(0,0,0,.4));
+}
+
+.moment-scene__player{
+  position: absolute;
+  top: 280px;
+  left: 70px;
   display: flex;
   align-items: center;
-  gap: 14px;
-  background: rgba(0,0,0,.35);
-  padding: 10px 18px 10px 10px;
+  gap: 12px;
+  background: rgba(0,0,0,.4);
+  padding: 8px 16px 8px 8px;
   border-radius: 999px;
   backdrop-filter: blur(4px);
+  z-index: 2;
 }
+
 .vinyl{
-  width: 46px; height: 46px;
+  width: 42px; height: 42px;
   border-radius: 50%;
   background: radial-gradient(circle at center, #333 0 6px, #111 7px 16px, #000 17px);
   position: relative;
+  flex-shrink: 0;
 }
 .vinyl::after{
   content: '';
@@ -661,9 +707,9 @@ html, body{
   background: var(--rose);
 }
 .vinyl.spin{ animation: spin 3s linear infinite; }
-.music-info{ display: flex; align-items: center; gap: 10px; font-size: .9rem; }
+.music-info{ display: flex; align-items: center; gap: 10px; font-size: .82rem; white-space: nowrap; }
 .play-btn{
-  width: 34px; height: 34px;
+  width: 32px; height: 32px;
   border-radius: 50%;
   border: none;
   background: var(--rose);
@@ -675,35 +721,55 @@ html, body{
 /* =========================================================
    PAGE — Playlist
    ========================================================= */
-.playlist-layout{
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  align-items: center;
+.playlist-scene{
+  position: relative;
+  width: 420px;
+  max-width: 100%;
+  height: 250px;
+  margin: 10px auto 20px;
 }
-.yt-embed{
-  width: 100%;
+
+.playlist-scene__video{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 235px;
   aspect-ratio: 16/9;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 14px 28px rgba(0,0,0,.4);
 }
-.yt-embed iframe{ width: 100%; height: 100%; border: none; }
+.playlist-scene__video iframe{ width: 100%; height: 100%; border: none; }
 
-.playlist-photos{
-  display: flex;
-  gap: 10px;
+.playlist-scene__frame{
+  position: absolute;
+  width: 86px;
+  height: 96px;
+  padding: 8px;
+  background: linear-gradient(135deg, #f7d488, #a6752c, #f7d488);
+  border-radius: 4px;
+  box-shadow: 0 14px 26px rgba(0,0,0,.4);
 }
+.playlist-scene__frame img{ width: 100%; height: 100%; object-fit: cover; display: block; background: #ddd; }
+.playlist-scene__frame--1{ top: 0; left: 255px; transform: rotate(-4deg); z-index: 2; }
+.playlist-scene__frame--2{ top: 16px; left: 350px; transform: rotate(4deg); z-index: 1; }
+.playlist-scene__frame--3{ top: 116px; left: 275px; transform: rotate(-3deg); z-index: 2; }
 
-.retro-row{
-  margin-top: 18px;
+.playlist-scene__retro{
+  position: absolute;
+  top: 158px;
+  left: 0;
   display: flex;
   align-items: center;
   gap: 14px;
 }
 .retro-icon{ font-size: 2.2rem; }
-.notes-staff{ opacity: .8; }
+.notes-staff{
+  position: absolute;
+  top: 168px;
+  left: 190px;
+  opacity: .85;
+}
 
 .floating-note{
   position: absolute;
@@ -712,9 +778,9 @@ html, body{
   text-shadow: 0 0 10px rgba(127,220,255,.7);
   pointer-events: none;
 }
-.note--1{ bottom: 12%; left: -6px; animation: bob 3.6s ease-in-out infinite; }
-.note--2{ bottom: 22%; right: -10px; animation: bob 4.2s ease-in-out infinite .3s; }
-.note--3{ bottom: 6%; right: 20%; animation: bob 3.2s ease-in-out infinite .6s; font-size: 1.2rem; }
+.note--1{ top: 60px; left: 230px; animation: bob 3.6s ease-in-out infinite; }
+.note--2{ top: 100px; left: 210px; animation: bob 4.2s ease-in-out infinite .3s; }
+.note--3{ top: 210px; left: 230px; animation: bob 3.2s ease-in-out infinite .6s; font-size: 1.2rem; }
 
 /* =========================================================
    PAGE — Wish (blow the candles)

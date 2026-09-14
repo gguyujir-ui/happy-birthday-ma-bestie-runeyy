@@ -49,7 +49,7 @@
       </div>
 
       <div class="collage__envelope">
-        <span class="collage__rose collage__rose--1">🌹</span>
+        <img class="collage__rose collage__rose--1" src="assets/rose.svg" alt="">
         <span class="collage__rose--small">🌷</span>
         <div class="collage__note">
           <p class="script-lg">Happy<br>Birthday</p>
@@ -100,7 +100,6 @@
 
   <!-- ============ PAGE 3 — JOURNEY (photo gallery) ============ -->
   <section class="page has-back" id="page-journey" data-page="journey" hidden>
-    <button class="btn-back" data-goto="menu">‹ Back</button>
 
     <div class="gallery">
       <figure class="pola pola--1"><img src="assets/gallery-1.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></figure>
@@ -120,12 +119,11 @@
 
   <!-- ============ PAGE 4 — MOMENT (personal message) ============ -->
   <section class="page has-back" id="page-moment" data-page="moment" hidden>
-    <button class="btn-back" data-goto="menu">‹ Back</button>
 
-    <h2 class="script-xl name-heading">Freya Anindya</h2>
+    <div class="moment-scene">
+      <p class="moment-scene__name script-xl">Freya Anindya</p>
 
-    <div class="moment-layout">
-      <div class="note-card">
+      <div class="moment-scene__note">
         <p class="paper-text">
           "Selamat ulang tahun, Sayang. Di hari spesialmu ini, aku cuma mau bilang
           terima kasih karena sudah lahir ke dunia dan membawa begitu banyak
@@ -134,21 +132,25 @@
           bahagiamu di tahun-tahun berikutnya. I love you so much, kini dan nanti."
         </p>
       </div>
+      <img class="moment-scene__rose moment-scene__rose--1" src="assets/rose.svg" alt="">
+      <img class="moment-scene__rose moment-scene__rose--2" src="assets/rose.svg" alt="">
+      <img class="moment-scene__rose moment-scene__rose--3" src="assets/rose.svg" alt="">
 
-      <div class="framed-photo">
+      <div class="moment-scene__frame">
         <img src="assets/photo-moment.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')">
       </div>
-    </div>
+      <img class="moment-scene__frame-rose" src="assets/rose.svg" alt="">
+      <span class="moment-scene__camera">📷</span>
 
-    <div class="roses roses--left">🌹🌹🌹</div>
-
-    <div class="music-player">
-      <div class="vinyl" id="vinyl"></div>
-      <div class="music-info">
-        <button class="play-btn" id="playBtn" aria-label="Putar musik">▶</button>
-        <span>Play Musik</span>
+      <div class="moment-scene__player">
+        <div class="vinyl" id="vinyl"></div>
+        <div class="music-info">
+          <button class="play-btn" id="playBtn" aria-label="Putar musik">▶</button>
+          <span>Play Musik</span>
+        </div>
       </div>
     </div>
+
     <audio id="bgAudio" loop preload="none">
       <!-- Ganti dengan file musikmu sendiri, contoh: <source src="assets/song.mp3" type="audio/mpeg"> -->
     </audio>
@@ -156,11 +158,9 @@
 
   <!-- ============ PAGE 5 — PLAYLIST ============ -->
   <section class="page has-back" id="page-playlist" data-page="playlist" hidden>
-    <button class="btn-back" data-goto="menu">‹ Back</button>
-    <h2 class="script-lg center">Playlist Kita</h2>
 
-    <div class="playlist-layout">
-      <div class="yt-embed">
+    <div class="playlist-scene">
+      <div class="playlist-scene__video">
         <!-- Ganti VIDEO_ID dengan id video YouTube pilihanmu -->
         <iframe
           src="https://www.youtube.com/embed/dQw4w9WgXcQ"
@@ -171,31 +171,28 @@
         </iframe>
       </div>
 
-      <div class="playlist-photos">
-        <div class="framed-photo framed-photo--sm"><img src="assets/photo-p1.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></div>
-        <div class="framed-photo framed-photo--sm"><img src="assets/photo-p2.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></div>
-        <div class="framed-photo framed-photo--sm"><img src="assets/photo-p3.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></div>
-      </div>
-    </div>
+      <div class="playlist-scene__frame playlist-scene__frame--1"><img src="assets/photo-p1.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></div>
+      <div class="playlist-scene__frame playlist-scene__frame--2"><img src="assets/photo-p2.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></div>
+      <div class="playlist-scene__frame playlist-scene__frame--3"><img src="assets/photo-p3.jpg" alt="" onerror="this.parentElement.classList.add('ph-empty')"></div>
 
-    <div class="retro-row">
-      <span class="retro-icon">📻</span>
-      <span class="retro-icon">📺</span>
+      <div class="playlist-scene__retro">
+        <span class="retro-icon">📻</span>
+        <span class="retro-icon">📺</span>
+      </div>
       <svg class="notes-staff" viewBox="0 0 300 60" width="150">
         <line x1="0" y1="10" x2="300" y2="10" stroke="#7fdcff" stroke-width="1.5"/>
         <line x1="0" y1="22" x2="300" y2="22" stroke="#7fdcff" stroke-width="1.5"/>
         <line x1="0" y1="34" x2="300" y2="34" stroke="#7fdcff" stroke-width="1.5"/>
         <line x1="0" y1="46" x2="300" y2="46" stroke="#7fdcff" stroke-width="1.5"/>
       </svg>
+      <span class="floating-note note--1">♪</span>
+      <span class="floating-note note--2">♫</span>
+      <span class="floating-note note--3">♪</span>
     </div>
-    <span class="floating-note note--1">♪</span>
-    <span class="floating-note note--2">♫</span>
-    <span class="floating-note note--3">♪</span>
   </section>
 
   <!-- ============ PAGE 6 — WISH (blow the candles) ============ -->
   <section class="page has-back" id="page-wish" data-page="wish" hidden>
-    <button class="btn-back" id="wishBackBtn" data-goto="menu">‹ Back</button>
     <h2 class="script-lg center">Tutup Mata, Buat Permintaan</h2>
 
     <div class="cake" id="cake">
@@ -224,7 +221,6 @@
 
   <!-- ============ PAGE 7 — RAMALAN (birthday personality fortune) ============ -->
   <section class="page has-back" id="page-game" data-page="game" hidden>
-    <button class="btn-back" data-goto="menu">‹ Back</button>
     <h2 class="script-lg center">Ramalan Ulang Tahun Tahun Ini</h2>
 
     <div class="quiz-progress"><span id="quizProgress">Soal 1/5</span></div>
@@ -243,6 +239,9 @@
 </main>
 
 <canvas id="confetti"></canvas>
+
+<!-- ============ TOMBOL BACK GLOBAL (tetap di pojok, nggak ikut animasi halaman) ============ -->
+<button class="btn-back" id="globalBackBtn" data-goto="menu" hidden>‹ Back</button>
 
 <!-- ============ MASKOT PENGGIRING ============ -->
 <div class="mascot" id="mascot">
