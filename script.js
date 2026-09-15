@@ -46,7 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
       next.classList.add('page-anim');
     }
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Reset scroll setiap ganti halaman. Di mode landscape-otomatis,
+    // yang benar-benar bisa di-scroll itu #rotateFrame (bukan window),
+    // jadi keduanya perlu direset supaya halaman baru selalu mulai dari atas.
+    window.scrollTo(0, 0);
+    const rf = document.getElementById('rotateFrame');
+    if (rf) { rf.scrollTop = 0; rf.scrollLeft = 0; }
     if (history.replaceState) history.replaceState(null, '', '#' + name);
     if (globalBackBtn) globalBackBtn.hidden = !pagesWithBack.includes(name);
     if (typeof updateMascot === 'function') updateMascot(name);
